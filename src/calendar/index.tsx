@@ -6,7 +6,7 @@ const Calendar = () => {
     order: number;
     name: string;
     genetive: string;
-    daysPerMounth: (leap?: number) => number;
+    daysPerMounth: (year?: number) => number;
   };
 
   type monthAndYearType = {
@@ -36,7 +36,7 @@ const Calendar = () => {
             order: 1,
             name: "Февраль",
             genetive: "Февраля",
-            daysPerMounth: (leap) => (leap ? 29 : 28),
+            daysPerMounth: (year) => (year! % 4 === 0 ? 29 : 28),
           };
         case 2:
           return {
