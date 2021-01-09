@@ -148,75 +148,78 @@ const Calendar = () => {
     },
     [date]
   );
-  const calendarGrid = (days: number): ReactNode => {
-    const res: Array<number[]> = [];
-    let week: number[] = [];
-    let dayOfTheWeek = 0;
+  const calendarGrid = useMemo(
+    () => (days: number): ReactNode => {
+      const res: Array<number[]> = [];
+      let week: number[] = [];
+      let dayOfTheWeek = 0;
 
-    let currentDay = 1;
-    const dayFromCurrentMonthStarted = getDay(monthYear);
-    const prevMonth =
-      getMonthInfo(date.month).order - 1 < 0
-        ? 11
-        : getMonthInfo(date.month).order - 1;
-    let monthStarted = getDay(monthYear) > 0 ? false : true;
+      let currentDay = 1;
+      const dayFromCurrentMonthStarted = getDay(monthYear);
+      const prevMonth =
+        getMonthInfo(date.month).order - 1 < 0
+          ? 11
+          : getMonthInfo(date.month).order - 1;
+      let monthStarted = getDay(monthYear) > 0 ? false : true;
 
-    const prevMonthDayCount = getMonthInfo(prevMonth).daysPerMounth();
-    let dayOfPrevMounth =
-      dayFromCurrentMonthStarted > 0
-        ? prevMonthDayCount - dayFromCurrentMonthStarted
-        : 0;
+      const prevMonthDayCount = getMonthInfo(prevMonth).daysPerMounth();
+      let dayOfPrevMounth =
+        dayFromCurrentMonthStarted > 0
+          ? prevMonthDayCount - dayFromCurrentMonthStarted
+          : 0;
 
-    while (days > -1) {
-      if (dayOfTheWeek < 7) {
-        if (days === 0) {
-          res.push([...week]);
-        }
-        if (monthStarted) {
-          dayOfTheWeek++;
-          days--;
-          week.push(currentDay);
-          currentDay++;
-        } else {
-          if (dayOfPrevMounth < prevMonthDayCount) {
-            dayOfTheWeek++;
-            week.push(dayOfPrevMounth);
-            dayOfPrevMounth++;
-          } else {
-            monthStarted = true;
+      while (days > -1) {
+        if (dayOfTheWeek < 7) {
+          if (days === 0) {
+            res.push([...week]);
           }
+          if (monthStarted) {
+            dayOfTheWeek++;
+            days--;
+            week.push(currentDay);
+            currentDay++;
+          } else {
+            if (dayOfPrevMounth < prevMonthDayCount) {
+              dayOfTheWeek++;
+              week.push(dayOfPrevMounth);
+              dayOfPrevMounth++;
+            } else {
+              monthStarted = true;
+            }
+          }
+        } else {
+          res.push([...week]);
+          week = [];
+          dayOfTheWeek = 0;
         }
-      } else {
-        res.push([...week]);
-        week = [];
-        dayOfTheWeek = 0;
       }
-    }
 
-    return (
-      <>
-        {res.map((week) => (
-          <tr>
-            {week.map((el) => {
-              if (
-                dateNow.getMonth() === date.month &&
-                dateNow.getFullYear() === date.year &&
-                el === dateNow.getDate()
-              ) {
-                return (
-                  <td>
-                    <span className="today">{el}</span>
-                  </td>
-                );
-              } else {
-                return <td>{el}</td>;
-              }
-            })}
-          </tr>
-        ))}
-      </>
-    );
-  };
+      return (
+        <>
+          {res.map((week) => (
+            <tr>
+              {week.map((el) => {
+                if (
+                  dateNow.getMonth() === date.month &&
+                  dateNow.getFullYear() === date.year &&
+                  el === dateNow.getDate()
+                ) {
+                  return (
+                    <td>
+                      <span className="today">{el}</span>
+                    </td>
+                  );
+                } else {
+                  return <td>{el}</td>;
+                }
+              })}
+            </tr>
+          ))}
+        </>
+      );
+    },
+    [date]
+  );
 
   return (
     <div className="calendarWrapper">
