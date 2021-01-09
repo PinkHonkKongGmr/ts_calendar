@@ -1,0 +1,10 @@
+.calendarWrapper {
+  width: 600px;
+  margin: 40px auto;
+}
+
+.dateSwitcher {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
