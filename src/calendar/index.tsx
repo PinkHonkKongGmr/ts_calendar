@@ -197,9 +197,21 @@ const Calendar = () => {
       <>
         {res.map((week) => (
           <tr>
-            {week.map((el) => (
-              <td>{el}</td>
-            ))}
+            {week.map((el) => {
+              if (
+                dateNow.getMonth() === date.month &&
+                dateNow.getFullYear() === date.year &&
+                el === dateNow.getDate()
+              ) {
+                return (
+                  <td>
+                    <span className="today">{el}</span>
+                  </td>
+                );
+              } else {
+                return <td>{el}</td>;
+              }
+            })}
           </tr>
         ))}
       </>
